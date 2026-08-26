@@ -12,6 +12,12 @@ label { display: block; color: var(--muted); font: 0.8rem Arial, sans-serif; mar
 .search-row { display: flex; gap: 0.6rem; }
 input { width: 100%; border: 1px solid var(--line); background: rgba(255,255,255,.65); padding: 1rem; font: 1rem Arial, sans-serif; }
 button { border: 0; background: var(--accent); color: white; padding: 0 1.5rem; font: 700 0.9rem Arial, sans-serif; cursor: pointer; }
+.message { color: var(--muted); font: 0.8rem Arial, sans-serif; }
+.results { display: grid; gap: 0.5rem; margin-top: 1.2rem; }
+.result { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; border-bottom: 1px solid var(--line); padding: 0.9rem 0; }
+.result span, .result small { color: var(--muted); font: 0.78rem Arial, sans-serif; }
+.result small { text-transform: uppercase; }
+button:disabled { cursor: wait; opacity: 0.65; }
 .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 4rem; background: var(--line); }
 .status-grid div { display: grid; gap: 0.5rem; background: var(--paper); padding: 1.3rem; }
 .status-grid strong { font-size: 2.3rem; font-weight: 400; }
