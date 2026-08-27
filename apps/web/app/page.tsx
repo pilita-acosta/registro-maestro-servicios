@@ -38,13 +38,23 @@ export default function Home() {
 
   return (
     <main>
+      <nav className="topbar" aria-label="Navegación principal">
+        <a className="brand" href="https://www.laplata.gob.ar/" target="_blank" rel="noreferrer">
+          <img src="https://turnos.laplata.gob.ar/public/images/laplata_dark.png" alt="La Plata Capital" />
+          <span>Subsecretaría de Hacienda</span>
+        </a>
+        <span className="environment">MVP · Interno</span>
+      </nav>
       <header>
-        <p className="eyebrow">Subsecretaría de Hacienda</p>
+        <p className="eyebrow">Gestión de servicios municipales</p>
         <h1>Registro Maestro</h1>
-        <p className="intro">Encontrá puntos de servicio, cuentas, proveedores y documentación desde un solo lugar.</p>
+        <p className="intro">La información de puntos de servicio, cuentas y proveedores en un solo lugar.</p>
       </header>
       <section className="search-panel" aria-labelledby="search-title">
-        <h2 id="search-title">Buscar información</h2>
+        <div className="section-heading">
+          <div><p className="eyebrow">Consulta rápida</p><h2 id="search-title">Buscar información</h2></div>
+          <span className="shortcut">Padrón maestro</span>
+        </div>
         <label htmlFor="search">NIS, cuenta, dependencia, proveedor o domicilio</label>
         <form className="search-row" onSubmit={search}>
           <input id="search" name="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ej. CAPS 24 o 123456" />
@@ -58,6 +68,11 @@ export default function Home() {
             <small>{item.status}</small>
           </article>)}
         </div>}
+        <div className="quick-links" aria-label="Accesos del padrón">
+          <button type="button" className="link-button">+ Nuevo punto de servicio</button>
+          <button type="button" className="link-button">Importar facturas</button>
+          <button type="button" className="link-button">Ver gastos</button>
+        </div>
       </section>
       <section className="status-grid" aria-label="Resumen del padrón">
         <div><strong>{items.length}</strong><span>Resultados actuales</span></div>
