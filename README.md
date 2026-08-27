@@ -30,6 +30,24 @@ docs            Decisiones, modelo y procedimiento operativo
 infra           Docker y configuración de servicios
 ```
 
+El flujo de ramas y validación está documentado en [docs/flujo-git.md](docs/flujo-git.md). El desarrollo actual se realiza en `feature/mvp-padron`; la integración a `main` queda sujeta a revisión.
+
+## Ejecutar todo con Docker
+
+Requiere Docker Desktop en Windows, macOS o Linux:
+
+```powershell
+docker compose -f infra/docker-compose.yml up --build
+```
+
+La aplicación web queda disponible en `http://localhost:3000`, la API en `http://localhost:8000/docs` y MinIO en `http://localhost:9001`. PostgreSQL queda disponible únicamente para los servicios del Compose en el puerto `5432`.
+
+Para detener los servicios:
+
+```powershell
+docker compose -f infra/docker-compose.yml down
+```
+
 ## Módulos funcionales previstos
 
 - **Padrón maestro:** búsqueda y ficha de puntos de servicio.

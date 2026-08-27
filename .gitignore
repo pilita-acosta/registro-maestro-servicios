@@ -8,3 +8,9 @@ node_modules/
 !.env.example
 *.log
 *.db
+
+# Material operativo local; puede contener datos personales o financieros.
+/docs/insumos/**
+!/docs/insumos/
+!/docs/insumos/catalogos/
+!/docs/insumos/catalogos/README.md

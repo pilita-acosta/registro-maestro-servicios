@@ -15,6 +15,31 @@ services:
       timeout: 5s
       retries: 10
 
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://app:app_dev_password@db:5432/servicios_municipales
+    ports:
+      - "8000:8000"
+    volumes:
+      - api_uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
   storage:
     image: minio/minio:latest
     command: server /data --console-address ":9001"
@@ -30,3 +55,4 @@ services:
 volumes:
   postgres_data:
   minio_data:
+  api_uploads:

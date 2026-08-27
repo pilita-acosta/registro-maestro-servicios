@@ -20,13 +20,40 @@ button { border: 0; background: var(--accent); color: white; padding: 0 1.5rem; 
 .message { color: var(--muted); font-size: 0.8rem; }
 .results { display: grid; gap: 0.5rem; margin-top: 1.2rem; }
 .result { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; border-bottom: 1px solid var(--line); padding: 0.9rem 0; }
+.result { cursor: pointer; }
 .result span, .result small { color: var(--muted); font-size: 0.78rem; }
 .result small { text-transform: uppercase; }
 .quick-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
 .link-button { background: transparent; color: var(--blue); padding: 0; font-size: 0.75rem; }
-button:disabled { cursor: wait; opacity: 0.65; }
+button:disabled { cursor: not-allowed; opacity: 0.65; }
+.link-button:disabled { cursor: not-allowed; }
+.file-button { display: inline-flex; align-items: center; min-height: 2.2rem; background: var(--blue); color: white; padding: 0 0.9rem; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+.file-button input { display: none; }
+.invoice-panel { margin-top: 2rem; border-top: 4px solid var(--accent); background: rgba(255,255,255,.86); padding: 1.6rem; box-shadow: 0 12px 32px rgba(23,42,69,.06); }
+.invoice-list { display: grid; gap: 0.7rem; }
+.invoice-row { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; border-left: 4px solid var(--line); border-bottom: 1px solid var(--line); padding: 1rem 0.8rem; }
+.invoice-row span, .invoice-row small { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 0.35rem; }
+.invoice-meta { display: grid; justify-items: end; gap: 0.25rem; }
+.invoice-meta b { font-size: 0.72rem; text-transform: uppercase; }
+.invoice-responsible { grid-column: 1 / -1; }
+.point-detail { position: relative; margin-top: 1rem; border-left: 4px solid var(--blue); background: #edf4fb; padding: 1.2rem; }
+.point-detail h3 { margin: 0.25rem 0; font-size: 1.25rem; }
+.point-detail p { color: var(--muted); font-size: 0.82rem; line-height: 1.45; }
+.close-detail { position: absolute; top: 0.8rem; right: 0.8rem; min-height: 2rem; padding: 0 0.7rem; font-size: 0.7rem; }
+.detail-accounts { display: grid; gap: 0.6rem; margin-top: 1rem; }
+.detail-accounts div { display: grid; gap: 0.2rem; border-top: 1px solid var(--line); padding-top: 0.6rem; }
+.detail-accounts span { color: var(--muted); font-size: 0.75rem; }
+.invoice-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
+.invoice-actions button { min-height: 2.2rem; padding: 0 0.9rem; font-size: 0.72rem; }
+.inline-form { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; }
+.inline-form input, .inline-form select { width: auto; min-width: 10rem; padding: 0.65rem; font-size: 0.8rem; }
+.inline-form button { min-height: 2.2rem; padding: 0 0.8rem; font-size: 0.72rem; }
+.risk-alto { border-left-color: var(--accent); }
+.risk-medio { border-left-color: #d28b20; }
+.risk-bajo { border-left-color: #378a66; }
 .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 4rem; background: var(--line); }
 .status-grid div { display: grid; gap: 0.5rem; background: var(--white); padding: 1.3rem; }
 .status-grid strong { font-size: 2.3rem; font-weight: 400; }
 .status-grid span { color: var(--muted); font: 0.75rem Arial, sans-serif; }
 @media (max-width: 600px) { main { padding: 1.2rem 5vw 4rem; } .topbar { align-items: start; flex-direction: column; gap: 1rem; } .brand { flex-wrap: wrap; } header { padding: 5rem 0 1.5rem; } .search-row { flex-direction: column; } .search-row button { min-height: 3rem; } .section-heading { flex-direction: column; } .status-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .invoice-row { grid-template-columns: 1fr; } .invoice-meta { justify-items: start; } }
