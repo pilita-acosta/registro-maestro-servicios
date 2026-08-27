@@ -13,7 +13,8 @@
 | Contrato | Define proveedor, servicio, vigencia, frecuencia de facturación y reglas esperadas. |
 | Expediente | Referencia al expediente único generado por el sistema institucional para un contrato. El sistema no reemplaza ni duplica el expediente. |
 | Alcance | Actuación asociada a una liquidación dentro de un expediente, por ejemplo `EXP 4061-2014072/2026 - ALC 1`. |
-| Liquidacion | Corte o conjunto de facturas que se prepara para tramitar y pagar en un período. |
+| Liquidacion | Corte o conjunto de facturas que se prepara para tramitar y pagar en un período. Puede ser individual o global. |
+| LiquidacionGlobal | Lote masivo enviado por un proveedor como ABSA, EDELAP o Camuzzi, con muchas facturas, domicilios y cuentas que se distribuyen entre varias secretarías. |
 | Cuenta | Identificación externa del proveedor para una boca: NIS, número de cuenta, medidor, suministro o código equivalente. |
 | Factura | Documento de un período, con importe, vencimiento, estado, origen y archivo original. |
 | Imputacion | Distribución del gasto de una factura entre una o más secretarías, con porcentajes o importes. |
@@ -53,6 +54,32 @@ El sistema será un índice de consulta y trazabilidad. Expedientes y contratos 
 - Una orden de pago RAFAM se vincula al alcance, pero no reemplaza la relación con factura, imputación o pago.
 - Un expediente puede tener múltiples alcances, y cada alcance puede contener muchas facturas.
 - La ubicación física registra quién tiene el expediente, desde cuándo, dónde debe devolverse y cuándo fue devuelto.
+
+### Liquidaciones globales
+
+Proveedores como ABSA, EDELAP y Camuzzi pueden enviar una facturación global. El archivo o lote recibido se considera una unidad de origen, pero cada fila o factura debe poder rastrearse individualmente:
+
+```text
+Liquidación global del proveedor
+	↓
+Facturas / filas de origen
+	↓
+Cuenta externa y PuntoServicio
+	↓
+Domicilio y Dependencia
+	↓
+Secretaría vigente
+	↓
+Imputación individual
+	↓
+Resumen agrupado por Secretaría
+```
+
+La liquidación global debe conservar el total informado por el proveedor, la cantidad de registros recibidos y el archivo original. El sistema debe calcular el total validado, el total observado, el total imputado y las diferencias.
+
+El resumen para Contaduría se genera después de validar cada factura, no antes. Una misma liquidación global puede producir una lista de muchas secretarías con sus montos asignados, manteniendo el detalle que explica cada total.
+
+La pantalla debe permitir navegar desde la global hacia sus facturas, cuentas, domicilios y secretarías, y también desde una secretaría o factura hacia la global, expediente, alcance y orden de pago relacionados.
 
 Ejemplo de referencia:
 
@@ -111,7 +138,7 @@ También puede pasar a `observada`, `rechazada`, `anulada` o `pago_parcial`. El 
 
 Luego de validar una importación, cada factura debe asociarse a una boca y obtener su secretaría responsable desde la asignación vigente. Si el gasto corresponde a más de una secretaría, se registra una imputación múltiple sin romper la relación factura-pago.
 
-La liquidación agrupa las facturas que se tramitan juntas, se vincula al contrato y al alcance de expediente correspondiente, y luego registra la orden de pago RAFAM. Esta agrupación no debe mover ni copiar facturas: solo establece una relación consultable.
+La liquidación agrupa las facturas que se tramitan juntas, se vincula al contrato y al alcance de expediente correspondiente, y luego registra la orden de pago RAFAM. Esta agrupación no debe mover ni copiar facturas: solo establece una relación consultable. En una liquidación global, la relación incluye muchas cuentas, domicilios y secretarías.
 
 La suma de imputaciones de una factura debe coincidir con el importe facturado, salvo que quede una diferencia explícita en estado observado. Contaduría debe poder obtener un resumen por secretaría, período, servicio y proveedor, y navegar desde ese total hasta las facturas y pagos que lo componen.
 

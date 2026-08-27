@@ -37,6 +37,8 @@ Proveedor 1---N Contrato 1---N Cuenta
 Servicio 1---N Contrato
 Contrato 1---1 Expediente 1---N Alcance 1---N Liquidacion
 Liquidacion N---N Factura 1---N Pago
+Liquidacion 1---N LiquidacionDetalle N---1 Cuenta
+LiquidacionDetalle N---1 Secretaria
 Alcance 1---N OrdenPago
 Expediente 1---N UbicacionExpediente
 Cuenta 1---N Factura
@@ -57,6 +59,8 @@ Contrato 1---N Conciliacion
 - `Contrato`: bajo qué condiciones se espera que facture.
 
 Esta separación permite tener múltiples proveedores para un mismo domicilio y comparar lo recibido contra lo que contractualmente se esperaba recibir.
+
+Una `LiquidacionGlobal` se implementará como una liquidación con muchos detalles, no como una factura gigante. `LiquidacionDetalle` conservará la fila de origen, factura, cuenta, boca, secretaría, importe informado, importe validado, estado y motivo de observación. Así se puede sumar por secretaría sin perder el nivel de detalle.
 
 ### Sistemas externos
 
