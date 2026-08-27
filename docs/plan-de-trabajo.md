@@ -7,8 +7,10 @@
 5. Implementar búsqueda global y ficha detallada.
 6. Implementar importación por perfiles de proveedor y prevalidación.
 7. Implementar conciliación de facturas faltantes, nuevas y duplicadas.
-8. Implementar facturas, imputaciones, pagos y auditoría.
-9. Implementar dashboard y exportación para Contaduría.
-10. Agregar permisos, pruebas, despliegue e IA analítica asistida.
+8. Implementar liquidaciones, expedientes, alcances, RAFAM y ubicación física.
+9. Implementar facturas, relación liquidación-factura, imputaciones, pagos y auditoría.
+10. Implementar dashboard y exportación para Contaduría.
+11. Evaluar integración oficial con Expedientes y RAFAM.
+12. Agregar permisos, pruebas, despliegue e IA analítica asistida.
 
 Cada etapa debe tener datos de prueba y una validación con usuarios del área antes de avanzar.
