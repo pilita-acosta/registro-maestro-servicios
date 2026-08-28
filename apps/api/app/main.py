@@ -83,7 +83,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://web-e2e:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -414,6 +414,10 @@ def attach_invoice_to_compensation(summary_id: int, invoice_id: int, database: S
 @app.get("/api/v1/puntos-servicio", tags=["puntos de servicio"])
 def search_service_points(
     query: str | None = Query(default=None, min_length=1),
+    secretary: str | None = Query(default=None, min_length=1),
+    domicile: str | None = Query(default=None, min_length=1),
+    service: str | None = Query(default=None, min_length=1),
+    provider: str | None = Query(default=None, min_length=1),
     database: Session = Depends(get_db),
 ) -> dict[str, object]:
     statement = (
@@ -422,6 +426,9 @@ def search_service_points(
         .outerjoin(ServicePoint.dependency)
         .outerjoin(ServicePoint.accounts)
         .outerjoin(Account.provider)
+        .outerjoin(Account.service_type)
+        .outerjoin(Dependency.assignments)
+        .outerjoin(DependencySecretaryAssignment.secretary)
     ).order_by(ServicePoint.name).distinct()
     if query:
         pattern = f"%{query.strip()}%"
@@ -436,11 +443,27 @@ def search_service_points(
                 Provider.name.ilike(pattern),
             )
         )
+    if secretary:
+        statement = statement.where(Secretary.name.ilike(f"%{secretary.strip()}%"))
+    if domicile:
+        statement = statement.where(Domicile.address.ilike(f"%{domicile.strip()}%"))
+    if service:
+        statement = statement.where(ServiceType.name.ilike(f"%{service.strip()}%"))
+    if provider:
+        statement = statement.where(Provider.name.ilike(f"%{provider.strip()}%"))
     items = list(database.scalars(statement))
-    response_items = [
-        ServicePointRead.model_validate(item).model_copy(update={"address": item.domicile.address})
-        for item in items
-    ]
+    response_items = []
+    for item in items:
+        account = item.accounts[0] if item.accounts else None
+        response_items.append({
+            **ServicePointRead.model_validate(item).model_dump(),
+            "address": item.domicile.address,
+            "dependency": item.dependency.name if item.dependency else None,
+            "secretary": next((assignment.secretary.name for assignment in (item.dependency.assignments if item.dependency else []) if assignment.secretary), None),
+            "service": account.service_type.name if account and account.service_type else None,
+            "provider": account.provider.name if account and account.provider else None,
+            "account": account.external_code if account else None,
+        })
     return {"items": response_items, "query": query, "total": len(items)}
 
 

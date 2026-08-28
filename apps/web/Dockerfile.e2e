@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/playwright:v1.55.0-noble
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci && npm install --no-save --no-package-lock @playwright/test@1.55.0
+
+COPY app ./app
+COPY playwright.config.ts ./playwright.config.ts
+COPY tests ./tests
+
+CMD ["npx", "playwright", "test"]

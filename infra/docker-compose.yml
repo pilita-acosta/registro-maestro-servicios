@@ -29,6 +29,15 @@ services:
       db:
         condition: service_healthy
 
+  api-tests:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    profiles: ["test"]
+    environment:
+      DATABASE_URL: sqlite:////tmp/registro_maestro_test.db
+    command: pytest -q
+
   web:
     build:
       context: ../apps/web
@@ -39,6 +48,32 @@ services:
       - "3000:3000"
     depends_on:
       - api
+
+  web-e2e:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://api:8000
+    profiles: ["test"]
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  ux-tests:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile.e2e
+    profiles: ["test"]
+    environment:
+      PLAYWRIGHT_BASE_URL: http://web-e2e:3000
+    depends_on:
+      web-e2e:
+        condition: service_healthy
 
   storage:
     image: minio/minio:latest

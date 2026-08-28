@@ -48,6 +48,20 @@ Para detener los servicios:
 docker compose -f infra/docker-compose.yml down
 ```
 
+## Verificaciones automáticas
+
+El build de `web` valida TypeScript durante la construcción. Las pruebas de la API usan una base SQLite temporal, por lo que no modifican PostgreSQL ni los datos de desarrollo:
+
+```powershell
+docker compose -f infra/docker-compose.yml --profile test run --rm api-tests
+docker compose -f infra/docker-compose.yml --profile test run --rm ux-tests
+docker compose -f infra/docker-compose.yml build web
+```
+
+Las pruebas de API cubren disponibilidad, resumen, columnas y filtros del Padrón, detalle del punto de servicio y el circuito de recepción, liquidación, pago y auditoría de una factura.
+
+Las pruebas UX/UI validan navegación de escritorio y móvil, búsqueda en el Padrón, columnas visibles de la grilla y apertura de la ficha de un punto de servicio.
+
 ## Módulos funcionales previstos
 
 - **Padrón maestro:** búsqueda y ficha de puntos de servicio.
